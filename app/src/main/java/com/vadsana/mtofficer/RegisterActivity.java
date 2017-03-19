@@ -19,6 +19,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.jibble.simpleftp.SimpleFTP;
+
+import java.io.File;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageView;
@@ -118,6 +122,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy
                     .Builder().permitAll().build();
             StrictMode.setThreadPolicy(threadPolicy);
+
+            //upload Image my FIP
+            SimpleFTP simpleFTP = new SimpleFTP();
+            simpleFTP.connect("ftp.swiftcodingthai.com",21,
+                    "4mar@swiftcodingthai.com", "Abc12345");
+            simpleFTP.bin();
+            simpleFTP.cwd("ImageAung");  //ชื่อโฟเดอร์
+            simpleFTP.stor(new File(pathImageString));  //ตำแหน่งของรูป
+            simpleFTP.disconnect();   //การเชื่อมต่อ
 
         }catch (Exception e){
             Log.d(tag, "e upload Image ==> " + e.toString());
