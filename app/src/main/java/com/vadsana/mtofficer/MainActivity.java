@@ -10,11 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText userEditText, passwordEditText;
     private Button button;
     private TextView textView;
+    private String strUser, strPassword, strTruePassword;
+    private  boolean aBoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     String strJSON = myGetData.get();
                     Log.d("19MarchV1", "JSon ==> "+ strJSON);
+
+                    JSONArray jsonArray = new JSONArray(strJSON);
+                    for (int i=0; i<jsonArray.length(); i++){
+                        JSONObject jsonObject =jsonArray.getJSONObject(i);
+                        if (strUser.equals(jsonObject.getString("User"))){
+                            aBoolean =false;
+                            strTruePassword = jsonObject.getString("Password");
+                        }
+                    }
+                    if (aBoolean){
+                        myAlert("User False");
+                    }else if (strPassword.equals(strPassword)){
+                        startActivity(new Intent(MainActivity.this, ShowOfficerActivity.class));
+                        finish();
+                    }else {
+                        myAlert("Password False");
+                    }
                 }catch (Exception e){
                     Log.d("19MarchV1", "e ==>" + e.toString());
                 }
