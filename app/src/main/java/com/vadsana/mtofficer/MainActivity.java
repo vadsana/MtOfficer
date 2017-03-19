@@ -3,6 +3,7 @@ package com.vadsana.mtofficer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +49,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (strUser.equals("") || strPassword.equals("")){
                 myAlert("มีช่องว่าง นะจ๊ะ");
 
+            }else {
+                try {
+                    MyGetData myGetData = new MyGetData(MainActivity.this);
+                    myGetData.execute("http://swiftcodingthai.com/4mar/getAung.php");
+
+                    String strJSON = myGetData.get();
+                    Log.d("19MarchV1", "JSon ==> "+ strJSON);
+                }catch (Exception e){
+                    Log.d("19MarchV1", "e ==>" + e.toString());
+                }
             }
         }
 
@@ -59,6 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void myAlert(String strMessage) {
-        Toast.makeText(MainActivity.this, "StrMessage", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, strMessage, Toast.LENGTH_SHORT).show();
     }
 }
